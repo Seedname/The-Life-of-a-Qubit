@@ -12,8 +12,6 @@ class Line {
         if (dot == 0) {
             if (delta.x == 0 && delta.y === 0) {
                 return;
-                // let vector = p5.Vector.sub(this.e1, c);
-                // return p5.Vector.dot(vector, vector);
             }
         }
     
@@ -27,8 +25,26 @@ class Line {
         var pos = p5.Vector.add(this.e1, p5.Vector.mult(delta, u));
         var D = p5.Vector.sub(pos, c);
         
-        if (p5.Vector.dot(D, D) <= sq(r/2)) {
-            return pos;
+        if (p5.Vector.dot(D, D) <= sq(r)) {
+            var delta = p5.Vector.sub(this.e2, this.e1);
+            var normal;
+            
+            if (delta.x > delta.y) {
+                if (pos.y > c.y) {
+                    normal = createVector(delta.y, -delta.x);
+                } else {
+                    normal = createVector(-delta.y, delta.x);
+                }
+            } else {
+                if (pos.x > c.x) {
+                    normal = createVector(-delta.y, delta.x);
+                } else {
+                    normal = createVector(delta.y, -delta.x);
+                }
+            }
+            
+            normal.normalize();
+            return p5.Vector.add(pos, p5.Vector.mult(normal, r));
         }
     }
 

@@ -9,7 +9,9 @@ class Level {
         this.lines.push(new Line(x, y, x, y + h));
         this.lines.push(new Line(x + w, y, x + w, y + h));
         this.lines.push(new Line(x, y + h, x + w, y + h));
+        // this.lines.push(new Rect(x, y, w, h));
         this.funcs.push({func: rect, args: [x, y, w, h]});
+
     }
     
     triangle(x1, y1, x2, y2, x3, y3) {
@@ -33,9 +35,13 @@ class Level {
     }
 
     func(f, start, stop, inc) {
+        this.funcs.push({func: beginShape, args: []});
+        this.funcs.push({func: vertex, args: [start, f(start)]});
         for (var i = start; i < stop; i += inc) {
-            lines.push(new Line(i, f(i), i + inc, func(i + inc)));
+            this.lines.push(new Line(i, f(i), i + inc, f(i + inc)));
+            this.funcs.push({func: vertex, args: [i+inc, f(i+inc)]});
         }
+        this.funcs.push({func: endShape, args: []});
     }
 
     fill(r, g, b) {
@@ -50,14 +56,31 @@ class Level {
         this.funcs.push({func: noStroke, args: []});
     }
 
-    collide(player) {
+    noFill() {
+        this.funcs.push({func: noFill, args: []});
+    }
+
+    // textSize(size) {
+    //     this.funcs.push({func: textSize, args: [size]});
+    // }
+
+    // textAlign(hAlign, vAlign) {
+    //     this.funcs.push({func: textAlign, args: [hAlign, vAlign]});
+    // }
+
+    // text(string, x, y) {
+    //     this.funcs.push({func: text, args: [string, x, y]});
+    // }
+
+    display() {
         for (var i = 0; i < this.funcs.length; i++) {
             this.funcs[i].func.apply(this, this.funcs[i].args);
         }
+    }
 
+    collide(player) {
         for (var i = 0; i < this.lines.length; i++) {
             player.collide(this.lines[i]);
-            // this.lines[i].display();
         }
     }
 }
