@@ -21,6 +21,7 @@ class Camera {
                 this.move = false;
             }
         }
+        this.pos.x = constrain(this.pos.x, width/2, Infinity);
     }
 
     apply() {

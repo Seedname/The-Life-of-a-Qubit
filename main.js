@@ -1,53 +1,30 @@
-var player, camera;
-var lines = [];
-
-function drawLine(func, start, stop, increment) {
-    var lines = [];
-    for (var i = start; i < stop; i += increment) {
-        lines.push(new Line(i, func(i), i+increment, func(i + increment)));
-    }
-    return lines;
-}
-
-function drawRect(x, y, w, h, lines) {
-    lines.push(new Line(x, y, x + w, y));
-    lines.push(new Line(x, y, x, y + h));
-    lines.push(new Line(x + w, y, x + w, y + h));
-    lines.push(new Line(x, y + h, x + w, y + h));
-}
-
-function f(x) {
-    // return 100 * Math.sin((x-width/2)/100) + height/2;
-    var r = 300;
-    return sqrt(sq(r) - sq(x-width/2)) + height/2;
-}
+var player, camera, levels;
+var level;
 
 function setup() {
     createCanvas(document.body.clientWidth, window.innerHeight);
-    player = new Player(width/2, 30, 20, [32, 83, 65, 68]);
-    // lines = drawLine(f, -300+width/2, 300+width/2, 30);
+    player = new Player(100, 0, 20, [32, 83, 65, 68]);
+    camera = new Camera(100, 0);
 
-    drawRect(width/2-50, 100, 100, 100, lines);
-    camera = new Camera(width/2, height/2);
-    
-    // lines = drawLine(f, 0, width, 50);
+    level = new Level();
+
+    level.fill(0, 0, 0);
+    level.noStroke();
+    level.rect(-50, 40, 1000, height-40);
+    level.triangle(950, 40, 2000, height, 950, height);
 }
 
 var keys = [];
 
 function draw() {
-    background(255);
+    background(128);
     camera.moveTo(player.pos);
     camera.update();
     camera.apply();
 
     player.update();
-
     player.constrain();
-    for (var i = 0; i < lines.length; i++) {
-        player.collide(lines[i]);
-        lines[i].display();
-    }
+    level.collide(player);
     player.display();
 
     let gravity = createVector(0, 0.2);
@@ -56,14 +33,13 @@ function draw() {
         player.move(keys);
     }
 
-    stroke(0)
-    line(0, 0, 0, height);
-    line(0, 0, width, 0);
-    line(width, 0, width, height);
-    line(0, height, width, height);
+    // stroke(0)
+    // line(0, 0, 0, height);
+    // line(0, 0, width, 0);
+    // line(width, 0, width, height);
+    // line(0, height, width, height);
     
 }
-
 
 function keyPressed() {
     keys[keyCode] = true;
