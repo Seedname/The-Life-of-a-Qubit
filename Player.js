@@ -37,9 +37,9 @@ class Player {
             this.boost += 0.2;
             this.boost = constrain(this.boost, 0, 10);
 
-            var velX = this.pos.x - this.old.x;
-            var dir = abs(velX) / velX;
-            this.accelerate(createVector(-dir/5 , 0))
+            var vel = p5.Vector.sub(this.pos, this.old);
+            var dir = p5.Vector.normalize(vel);
+            this.accelerate(p5.Vector.mult(dir, -1/5));
         } 
         if (keys[this.controls[1]]) {
             this.accelerate(createVector(0, 0.1));

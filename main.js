@@ -33,41 +33,49 @@ function draw() {
 
     let gravity = createVector(0, 0.2);
     player.accelerate(gravity);
-    if (keyPressed || mouseIsPressed) {
+    if (keyIsPressed) {
         player.move(keys);
+    } else if (mouseIsPressed) {
+        if (mouseX < width/2) {
+            keys[player.controls[2]] = true;
+            player.move(keys);
+        } else {
+            keys[player.controls[2]] = false;
+        }
+        if (mouseX >= width/2 && dist(mouseX, mouseY, width-150, height-100) > 25)  {
+            keys[player.controls[3]] = true;
+            player.move(keys);
+        } else {
+            keys[player.controls[3]] = false;
+        }
+        if (dist(mouseX, mouseY, width-150, height-100) <= 25){
+            keys[player.controls[0]] = true;
+            player.move(keys);
+        } else {
+            keys[player.controls[0]] = false;
+            player.release(keys);
+        }
+    } else {
+        keys[player.controls[2]] = false;
+        keys[player.controls[3]] = false;
+        keys[player.controls[0]] = false;
+        player.release(keys);
     }
 
     levels[level].display();
     pop();
     if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
         noStroke();
+        fill(255);
+        if (dist(mouseX, mouseY, width-150, height-100) <= 25) {
+            fill(200);
+        }
         ellipse(width-150, height-100, 50, 50);
-        stroke(0);
+        fill(0);
         textAlign(CENTER, CENTER);
         text("JUMP", width-150, height-100);
     }
     
-}
-
-function mousePressed() {
-    if (mouseX < width/2) {
-        keys[player.controls[2]] = true;
-    } else if (dist(mouseX, mouseY, width-100, height-100) > 50)  {
-        keys[player.controls[3]] = true;
-    } else {
-        keys[player.controls[0]] = true;
-    }
-}
-
-function mouseReleased() {
-    if (mouseX < width/2) {
-        keys[player.controls[2]] = false;
-    } else if (dist(mouseX, mouseY, width-100, height-100) > 50)  {
-        keys[player.controls[3]] = false;
-    } else {
-        keys[player.controls[0]] = false;
-        player.release(keys);
-    }
 }
 
 function keyPressed() {
