@@ -19,6 +19,7 @@ function setup() {
 var keys = [];
 
 function draw() {
+    push();
     camera.moveTo(player.pos);
     camera.update();
     camera.apply();
@@ -32,12 +33,41 @@ function draw() {
 
     let gravity = createVector(0, 0.2);
     player.accelerate(gravity);
-    if (keyPressed) {
+    if (keyPressed || mouseIsPressed) {
         player.move(keys);
     }
 
     levels[level].display();
+    pop();
+    if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
+        noStroke();
+        ellipse(width-150, height-100, 50, 50);
+        stroke(0);
+        textAlign(CENTER, CENTER);
+        text("JUMP", width-150, height-100);
+    }
     
+}
+
+function mousePressed() {
+    if (mouseX < width/2) {
+        keys[player.controls[2]] = true;
+    } else if (dist(mouseX, mouseY, width-100, height-100) > 50)  {
+        keys[player.controls[3]] = true;
+    } else {
+        keys[player.controls[0]] = true;
+    }
+}
+
+function mouseReleased() {
+    if (mouseX < width/2) {
+        keys[player.controls[2]] = false;
+    } else if (dist(mouseX, mouseY, width-100, height-100) > 50)  {
+        keys[player.controls[3]] = false;
+    } else {
+        keys[player.controls[0]] = false;
+        player.release(keys);
+    }
 }
 
 function keyPressed() {
