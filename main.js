@@ -42,13 +42,13 @@ function draw() {
         } else {
             keys[player.controls[2]] = false;
         }
-        if (mouseX >= width/2 && dist(mouseX, mouseY, width-150, height-100) > 25)  {
+        if (mouseX >= width/2 && dist(mouseX, mouseY, width-150, height-100) > 40)  {
             keys[player.controls[3]] = true;
             player.move(keys);
         } else {
             keys[player.controls[3]] = false;
         }
-        if (dist(mouseX, mouseY, width-150, height-100) <= 25){
+        if (dist(mouseX, mouseY, width-150, height-100) <= 40){
             keys[player.controls[0]] = true;
             player.move(keys);
         } else {
@@ -64,13 +64,14 @@ function draw() {
 
     levels[level].display();
     pop();
-    if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
+    if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
         noStroke();
         fill(255);
-        if (dist(mouseX, mouseY, width-150, height-100) <= 25) {
+        if (dist(mouseX, mouseY, width-150, height-100) <= 40) {
             fill(200);
         }
-        ellipse(width-150, height-100, 50, 50);
+        textSize(25);
+        ellipse(width-150, height-100, 80, 80);
         fill(0);
         textAlign(CENTER, CENTER);
         text("JUMP", width-150, height-100);
