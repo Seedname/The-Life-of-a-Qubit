@@ -14,7 +14,7 @@ class Camera {
         if (this.move) {
             var delta = p5.Vector.sub(this.movePos, this.pos);
             var dist = delta.mag();
-            if (dist > 1) {
+            if (dist > 0.1) {
                 this.vel.set(p5.Vector.div(delta, 20));
                 this.pos.add(this.vel);
             } else {

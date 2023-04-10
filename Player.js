@@ -34,17 +34,12 @@ class Player {
 
     move(keys) {
         if (keys[this.controls[0]] && this.touchingFloor) {
-        // if (keys[this.controls[0]] ) {
-            // this.accelerate(createVector(0, -5));
             this.boost += 0.2;
             this.boost = constrain(this.boost, 0, 10);
+
             var velX = this.pos.x - this.old.x;
-            if (abs(velX) > 1) {
-                velX = velX/abs(velX);
-            }
-            this.old.x = this.pos.x-velX;
-            // this.accelerate(createVector(5*cos(this.angle + PI/2), 5*sin(this.angle + PI)))
-            // this.old = createVector(this.pos.x, this.pos.y+5)
+            var dir = abs(velX) / velX;
+            this.accelerate(createVector(-dir/5 , 0))
         } 
         if (keys[this.controls[1]]) {
             this.accelerate(createVector(0, 0.1));
@@ -83,7 +78,12 @@ class Player {
         var result = object.collide(this.pos, this.r);
         if (result) {
             this.pos.set(result);
-            this.touchingFloor = true;
+            if (object.constructor.name == "Spike") {
+                this.old.set(result);
+                this.angle = 0;
+            } else {
+                this.touchingFloor = true;
+            }
         }
     }
 
