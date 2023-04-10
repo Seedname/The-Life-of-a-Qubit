@@ -17,7 +17,6 @@ class Player {
     }
 
     update() {
-        this.touchingFloor = false;
         var vel = p5.Vector.sub(this.pos, this.old);
         this.angle += vel.x;
         this.old.set(this.pos);
@@ -39,7 +38,7 @@ class Player {
 
             var vel = p5.Vector.sub(this.pos, this.old);
             var dir = p5.Vector.normalize(vel);
-            this.accelerate(p5.Vector.mult(dir, -1/5));
+            this.accelerate(p5.Vector.mult(dir, -1/6));
         } 
         if (keys[this.controls[1]]) {
             this.accelerate(createVector(0, 0.1));
@@ -60,6 +59,7 @@ class Player {
     }
 
     constrain() {
+        this.touchingFloor = false;
         this.acc.limit(8);
         if(this.pos.x + this.r > 100000) {
             this.pos.x = width-this.r;
@@ -81,6 +81,7 @@ class Player {
             if (object.constructor.name == "Spike") {
                 this.old.set(result);
                 this.angle = 0;
+                this.boost = 0;
             } else {
                 this.touchingFloor = true;
             }
@@ -89,16 +90,15 @@ class Player {
 
     display() {
         var angle = this.angle/60;
-        fill(255, 255, 0);
-        noStroke();
-        
-        let b = this.boost/3;
-
-        ellipse(this.pos.x, this.pos.y + sq(b)/2, 2 * this.r - sq(b) * sin(angle % PI / 2), 2 * this.r - sq(b) * cos(angle % PI/2))
-
+        let b = this.boost/2.5;
         push();
         translate(this.pos.x, this.pos.y + sq(b)/2);
         rotate(angle);
+
+        fill(255, 255, 0);
+        noStroke(); 
+        ellipse(0, 0, 2 * this.r, 2 * this.r - sq(b));
+        
         
         stroke(0);
         noFill();

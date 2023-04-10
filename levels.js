@@ -3,13 +3,13 @@ function f(x) {
 }
 
 function x(t) {
-    // return 100*(t - sin(t));
-    return 100 * cos(t);
+    return 100*(t - sin(t));
+    // return 100 * cos(t);
 }
 
 function y(t) {
-    // return 200*(1 - cos(t));
-    return 100 * sin(t);
+    return 200*(1 - cos(t));
+    // return 100 * sin(t);
 }
 
 function loadLevel0 () {
@@ -40,7 +40,8 @@ function loadLevel0 () {
     level.spike(775+120, 800, 50);
     level.spike(775+160, 800, 50);
     level.spike(775+200, 800, 50);
-    // level.para(y, x, 0, 2*PI, 0.1, 100, 0);
+    level.noFill();
+    // level.para(y, x, -PI/2, PI/2, 0.1, 100, 0);
     // level.func(f, 1000-50, 5000, 10);
 
     return level;

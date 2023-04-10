@@ -26,9 +26,10 @@ function draw() {
     
     scenes[level]();
 
-    player.update();
+    
     player.constrain();
     levels[level].collide(player);
+    player.update();
     player.display();
 
     let gravity = createVector(0, 0.2);
